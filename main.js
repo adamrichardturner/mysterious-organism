@@ -12,7 +12,8 @@ const mockUpStrand = () => {
     }
     return newStrand
 }
-
+// Factory function that returns specimen objects containing
+// DNA bases.
 const pAequorFactory = (num, base) => {
     return {
         specimenNum: num,
@@ -32,21 +33,38 @@ const pAequorFactory = (num, base) => {
             let source = pAequor.dna;
             let target = this.dna;
             let matched = [];
-            let percent = matched.length / (source.length + target.length) * 100;
             console.log('Source: ' + source + ' \n');
             console.log('Target: ' + target + ' \n');
-            console.log('Common: ' + matched);
             for (let i in source) {
                 if (source[i] === target[i]) {
                     matched.push(source[i]);
                 }
             }
+            let percent = (matched.length / (source.length + target.length) * 100).toFixed(2);
             return `\nspecimen #1 and specimen #2 have ${percent}% DNA in common`;
+        },
+        willLikelySurvive() {
+            let gdDna = [];
+            let dna = this.dna;
+            for(let i in dna) {
+                if(dna[i] === 'C') {
+                    gdDna.push(dna[i]);
+                } else if (dna[i] === 'G') {
+                    gdDna.push(dna[i]);
+                }
+            }
+            return gdDna.length >= 9;
         }
     }
 }
-
 const test1 = pAequorFactory(2, mockUpStrand());
 const test2 = pAequorFactory(3, mockUpStrand());
+const makeSpecimens = num => {
+    const arr = [];
+    for(let i=0; i < num; i++) {
+        arr.push(pAequorFactory(i, mockUpStrand()))
+    }
+    return arr;
+}
 
-console.log(test1.compareDNA(test2));
+const testArray = makeSpecimens(30);
